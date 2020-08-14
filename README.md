@@ -33,6 +33,8 @@ python3 -m venv .env
 # Linux/Mac
 source .env/Scripts/activate
 ```
+> _The dependencies we install now will be isolated in the virtual environment and will not conflict with system dependencies._  
+> Type `deactivate` to turn off virual environment  
 
 #### 3. Install dependencies
 ```bash
