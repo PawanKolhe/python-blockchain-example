@@ -11,7 +11,7 @@ This project is based on tutorial at [Tutorialpoint](https://www.tutorialspoint.
 ## Environment Setup
 #### 1. Clone project
 ```bash
-git clone <url>
+git clone https://github.com/PawanKolhe/python-blockchain-example.git
 cd ./python-blockchain-example
 ```
 
