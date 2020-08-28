@@ -56,9 +56,9 @@ class Transaction:
 
     def display_transaction(self):
         dict = self.to_dict()
-        print("SENDER: " + dict['sender'])
+        print("SENDER:\n" + dict['sender'])
         print('-----')
-        print("RECIPIENT: " + dict['recipient'])
+        print("RECIPIENT:\n" + dict['recipient'])
         print('-----')
         print("VALUE: " + str(dict['value']))
         print('-----')
