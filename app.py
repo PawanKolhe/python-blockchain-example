@@ -89,7 +89,7 @@ class Transaction:
             transaction.display_transaction()
 
 last_block_hash = ""
-TPCoins = []
+MYCOINS = []
 
 class Block:
     def __init__(self):
@@ -97,14 +97,13 @@ class Block:
         self.previous_block_hash = ""
         self.Nonce = ""
 
-def dump_blockchain (self):
+def dump_blockchain(self):
     print ("Number of blocks in the chain: " + str(len(self)))
-    for x in range (len(TPCoins)):
-        block_temp = TPCoins[x]
-        print ("block # " + str(x))
+    for x in range(len(MYCOINS)):
+        block_temp = MYCOINS[x]
+        print ("BLOCK# " + str(x))
         for transaction in block_temp.verified_transactions:
             transaction.display_transaction()
-        print ('=====================================')
 
 # Create Users
 pawan = Client()
@@ -128,16 +127,16 @@ t3 = Transaction(puneet, nitesh, 8.0)
 print("T3 Signature", t3.sign_transaction())
 Transaction.transactions.append(t3)
 
-block1 = Block()
-block1.previous_block_hash = None
-block1.Nonce = None
-block1.verified_transactions.append(t1)
-block1.verified_transactions.append(t2)
-block1.verified_transactions.append(t3)
-digest = hash (block1)
+block0 = Block()
+block0.previous_block_hash = None
+block0.Nonce = None
+block0.verified_transactions.append(t1)
+block0.verified_transactions.append(t2)
+block0.verified_transactions.append(t3)
+digest = hash(block0)
 last_block_hash = digest
-TPCoins.append (block1)
-dump_blockchain(TPCoins)
+MYCOINS.append(block0)
+dump_blockchain(MYCOINS)
 
 # Display All Transactions
 # Transaction.display_all_transaction()
