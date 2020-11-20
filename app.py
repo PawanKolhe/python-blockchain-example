@@ -17,7 +17,17 @@ from Crypto.PublicKey import RSA
 from Crypto.Signature import PKCS1_v1_5
 from Crypto.Hash import SHA
 
-class User:
+def pretty_print(st):
+    st_length = len(st)
+    columns = 60
+    new_st = ""
+    i = 0
+    while i < st_length:
+        new_st += st[i:i+columns] + "\n"
+        i += columns
+    return new_st[0:st_length-2]
+
+class Client:
     def __init__(self):
         random = Crypto.Random.new().read
         self._private_key = RSA.generate(1024, random)
@@ -45,25 +55,28 @@ class Transaction:
 
         return collections.OrderedDict({
             'sender': identity,
-            'recipient': self.recipient,
+            'recipient': self.recipient.identity,
             'value': self.value,
-            'time' : self.time})
+            'time' : self.time
+        })
 
     def sign_transaction(self):
-        private_key = self.sender._private_key
-        signer = PKCS1_v1_5.new(private_key)
+        signer = PKCS1_v1_5.new(self.sender._private_key)
         h = SHA.new(str(self.to_dict()).encode('utf8'))
         return binascii.hexlify(signer.sign(h)).decode('ascii')
 
     def display_transaction(self):
-        dict = self.to_dict()
-        print("SENDER:\n" + dict['sender'])
-        print('-----')
-        print("RECIPIENT:\n" + dict['recipient'])
-        print('-----')
-        print("VALUE: " + str(dict['value']))
-        print('-----')
-        print("TIME: " + str(dict['time']))
+        t = self.to_dict()
+        print('\n===============')
+        print("| TRANSACTION |")
+        print('===============')
+        print("SENDER:\n" + pretty_print(t['sender']))
+        print('---------------')
+        print("RECIPIENT:\n" + pretty_print(t['recipient']))
+        print('---------------')
+        print("VALUE:\n" + str(t['value']))
+        print('---------------')
+        print("TIME:\n" + str(t['time']))
 
     @staticmethod
     def display_all_transaction():
@@ -91,29 +104,28 @@ def dump_blockchain (self):
         print ("block # " + str(x))
         for transaction in block_temp.verified_transactions:
             transaction.display_transaction()
-            print ('--------------')
         print ('=====================================')
 
 # Create Users
-pawan = User()
-shashwat = User()
-puneet = User()
-nitesh = User()
+pawan = Client()
+shashwat = Client()
+puneet = Client()
+nitesh = Client()
 
 # Transactions
 ## T1
-t1 = Transaction(pawan, shashwat.identity, 5.0)
-t1.sign_transaction()
+t1 = Transaction(pawan, shashwat, 5.0)
+print("T1 Signature", t1.sign_transaction())
 Transaction.transactions.append(t1)
 
 ## T2
-t2 = Transaction(puneet, nitesh.identity, 10.0)
-t2.sign_transaction()
+t2 = Transaction(puneet, nitesh, 10.0)
+print("T2 Signature", t2.sign_transaction())
 Transaction.transactions.append(t2)
 
 ## T3
-t3 = Transaction(puneet, nitesh.identity, 8.0)
-t3.sign_transaction()
+t3 = Transaction(puneet, nitesh, 8.0)
+print("T3 Signature", t3.sign_transaction())
 Transaction.transactions.append(t3)
 
 block1 = Block()
