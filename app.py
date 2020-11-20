@@ -4,12 +4,13 @@ import random
 import string
 import json
 import binascii
+import numpy as np
+import pandas as pd
+import pylab as pl
 import logging
 import datetime
 import collections
 
-import string
-import binascii
 import Crypto
 import Crypto.Random
 from Crypto.PublicKey import RSA
@@ -68,11 +69,30 @@ class Transaction:
     def display_all_transaction():
         count = 1
         for transaction in Transaction.transactions:
-            print ('============================================')
+            print ('============================================') 
             print('TRANSACTION #', count);
             print('============================================')
             count = count + 1
             transaction.display_transaction()
+
+last_block_hash = ""
+TPCoins = []
+
+class Block:
+    def __init__(self):
+        self.verified_transactions = []
+        self.previous_block_hash = ""
+        self.Nonce = ""
+
+def dump_blockchain (self):
+    print ("Number of blocks in the chain: " + str(len(self)))
+    for x in range (len(TPCoins)):
+        block_temp = TPCoins[x]
+        print ("block # " + str(x))
+        for transaction in block_temp.verified_transactions:
+            transaction.display_transaction()
+            print ('--------------')
+        print ('=====================================')
 
 # Create Users
 pawan = User()
@@ -81,15 +101,31 @@ puneet = User()
 nitesh = User()
 
 # Transactions
+## T1
 t1 = Transaction(pawan, shashwat.identity, 5.0)
 t1.sign_transaction()
 Transaction.transactions.append(t1)
+
+## T2
 t2 = Transaction(puneet, nitesh.identity, 10.0)
 t2.sign_transaction()
 Transaction.transactions.append(t2)
+
+## T3
 t3 = Transaction(puneet, nitesh.identity, 8.0)
 t3.sign_transaction()
 Transaction.transactions.append(t3)
 
+block1 = Block()
+block1.previous_block_hash = None
+block1.Nonce = None
+block1.verified_transactions.append(t1)
+block1.verified_transactions.append(t2)
+block1.verified_transactions.append(t3)
+digest = hash (block1)
+last_block_hash = digest
+TPCoins.append (block1)
+dump_blockchain(TPCoins)
+
 # Display All Transactions
-Transaction.display_all_transaction()
+# Transaction.display_all_transaction()
